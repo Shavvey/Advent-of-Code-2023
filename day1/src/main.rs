@@ -4,7 +4,9 @@ use std::path::Path;
 
 fn main() {
     // file example.txt must exist in current path
-    if let Ok(lines) = read_lines("./example.txt") {
+    println!("reading from file");
+    let mut sum: i32 = 0;
+    if let Ok(lines) = read_lines("./input.txt") {
         // Consumes the iterator, returns an (Optional) String
         for line in lines {
             if let Ok(l) = line {
@@ -12,20 +14,24 @@ fn main() {
                 // create a string that can hold the two digits
                 let mut num_string = String::with_capacity(2);
                 for char in l.chars() {
-                    if char.is_numeric() {
+                    if char.is_digit(10) {
                         num_string.insert(0, char);
+                        break;
                     }
                 }
                 for char in l.chars().rev() {
-                    if char.is_numeric() {
+                    if char.is_digit(10) {
                         num_string.insert(1, char);
+                        break;
                     }
                 }
                 let num = num_string.parse::<i32>().unwrap();
                 println!("Number parsed from line: {}", num);
+                sum += num;
             }
         }
     }
+    println!("Sum of digits found: {}", sum);
 }
 
 // The output is wrapped in a Result to allow matching on errors
