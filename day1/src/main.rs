@@ -39,8 +39,8 @@ fn parse_num_digits() -> i32 {
                 let mut num_string = String::new();
                 // clone a mutable reference to dictionary
                 let mut num_dictionary = word_num.clone();
-                let num1: i32;
-                let num2: i32;
+                let mut num1: i32;
+                let mut num2: i32;
                 // create character iterator using each char
                 for char in ln.chars() {
                     num_string.push(char);
@@ -49,7 +49,20 @@ fn parse_num_digits() -> i32 {
                         if !key.contains(&num_string) {
                             num_dictionary.remove(key);
                         }
-                        if num_dictionary.len() == 1 {}
+                        if num_dictionary.len() == 1 {
+                            match num_dictionary.get(key) {
+                                Some(val) => {
+                                    num1 = *val;
+                                    // break from loop
+                                    break;
+                                }
+                                // if we can't get they key yet just do nothing
+                                None => (),
+                            }
+                        }
+                        if num_dictionary.len() == 0 {
+                            num_string.clear();
+                        }
                     }
                 }
             }
