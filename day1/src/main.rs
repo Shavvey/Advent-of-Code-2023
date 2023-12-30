@@ -45,6 +45,7 @@ fn parse_num_digits() {
                 let mut num_dictionary = word_num.clone();
                 // create character iterator using each char
                 for char in ln.chars() {
+                    println!("current char: {char}");
                     if char.is_digit(10) {
                         match char.to_digit(10) {
                             Some(val) => {
@@ -55,44 +56,48 @@ fn parse_num_digits() {
                             None => (),
                         }
                     }
-                    num_string.push(char);
 
+                    // update num string
+                    num_string.push(char);
+                    // print out the current 'num_string' for testing purposes
+
+                    if num_dictionary.len() == 1 {
+                        // this is bad and doesn't work
+                        for (key, value) in num_dictionary.iter() {
+                            // if the num_string is matched with dictionary
+                            if key.eq(&num_string) {
+                                num_string.clear();
+                                // save the value in dict as the decoded number
+                                num1 = *value;
+                                // break out of the iteration loop
+                                num_dictionary = word_num.clone();
+                                break;
+                            }
+                            // if dictionary cannot be matched yet do nothing
+                        }
+                    }
+
+                    if num_dictionary.is_empty() {
+                        // clear out num string
+                        num_string.clear();
+                        // 'num_string' is just now the last character
+                        num_string.push(char);
+                        // copy word number dictionary again
+                        num_dictionary = word_num.clone();
+                    }
                     for key in word_num.keys() {
                         if !key.contains(&num_string) {
                             num_dictionary.remove(key);
                         }
                     }
-                    if num_dictionary.is_empty() {
-                        // clear out num string
-                        num_string.clear();
-                        // copy word number dictionary again
-                        num_dictionary = word_num.clone();
-                    }
-
-                    if num_dictionary.len() == 1 {
-                        // this is bad and doesn't work
-                        match num_dictionary.iter().last() {
-                            Some(dict) => {
-                                // if the num_string is matched with dictionary
-                                if dict.0.eq(&num_string) {
-                                    num_string.clear();
-                                    // save the value in dict as the decoded number
-                                    num1 = *dict.1;
-                                    // break out of the iteration loop
-                                    break;
-                                }
-                            }
-                            // if dictionary cannot be matched yet do nothing
-                            None => (),
-                        }
-                    }
                 }
+
                 println!("first number parsed from line: {num1}");
                 num_string.clear();
                 num_dictionary = word_num.clone();
                 // doing the same thing but now it is reversed
                 for char in ln.chars().rev() {
-                    // first handle the simple is_digit case
+                    println!("current char: {char}");
                     if char.is_digit(10) {
                         match char.to_digit(10) {
                             Some(val) => {
@@ -103,26 +108,34 @@ fn parse_num_digits() {
                             None => (),
                         }
                     }
-                    // insert char to the fron of the string
+                    // insert char at the beginning of the string
                     num_string.insert(0, char);
 
+                    println!("current num_string: {num_string}");
                     for key in word_num.keys() {
                         if !key.contains(&num_string) {
                             num_dictionary.remove(key);
                         }
                     }
+                    // check if dictionary is current empty
                     if num_dictionary.is_empty() {
                         // clear out num string
                         num_string.clear();
+                        num_string.insert(0, char);
                         // copy word number dictionary again
                         num_dictionary = word_num.clone();
                     }
-
+                    // handle the dictionary part
                     if num_dictionary.len() == 1 {
                         // this is bad and doesn't work
                         for (key, val) in num_dictionary.iter() {
                             if key.eq(&num_string) {
+                                num_string.clear();
+                                // assign the number to given value
                                 num2 = *val;
+                                // consume the last term the dictionary
+                                num_dictionary = word_num.clone();
+                                // break from current iteration
                                 break;
                             }
                         }
