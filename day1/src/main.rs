@@ -12,13 +12,14 @@ fn main() {
 }
 
 fn parse_num_digits() {
-    // filename that we willl read from
+    // file name that we will read from
     let filename = "example.txt";
     let mut num1: i32 = -1;
     let mut num2: i32 = -1;
     println!("Reading from the file: {filename}");
     // consume the iterator and returns (optionally) a string
     if let Ok(lines) = read_lines(filename) {
+        // this hash map is very costly and not a good approach for this problem
         let word_num: HashMap<&str, i32> = HashMap::from([
             ("zero", 0),
             ("one", 1),
@@ -74,6 +75,7 @@ fn parse_num_digits() {
                             Some(dict) => {
                                 // if the num_string is matched with dictionary
                                 if dict.0.eq(&num_string) {
+                                    num_string.clear();
                                     // save the value in dict as the decoded number
                                     num1 = *dict.1;
                                     // break out of the iteration loop
