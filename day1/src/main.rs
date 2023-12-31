@@ -13,9 +13,9 @@ fn main() {
 
 fn parse_num_digits() {
     // file name that we will read from
-    let filename = "example.txt";
-    let mut num1: i32 = -1;
-    let mut num2: i32 = -1;
+    let filename = "input.txt";
+    let mut num1: i32 = 0;
+    let mut num2: i32 = 0;
     println!("Reading from the file: {filename}");
     // consume the iterator and returns (optionally) a string
     if let Ok(lines) = read_lines(filename) {
@@ -45,10 +45,11 @@ fn parse_num_digits() {
                 let mut num_dictionary = word_num.clone();
                 // create character iterator using each char
                 for char in ln.chars() {
-                    println!("current char: {char}");
+                    //println!("current char: {char}");
                     num_string.push(char);
                     // print out the current 'num_string' for testing purposes
                     println!("current num_string: {num_string}");
+
                     for key in word_num.keys() {
                         if !key.contains(&num_string) {
                             num_dictionary.remove(key);
@@ -87,7 +88,6 @@ fn parse_num_digits() {
                         num_string.push(char);
                         // copy word number dictionary again
                         num_dictionary = word_num.clone();
-                        continue;
                     }
                 }
 
@@ -97,6 +97,30 @@ fn parse_num_digits() {
                 // doing the same thing but now it is reversed
                 for char in ln.chars().rev() {
                     println!("current char: {char}");
+                    num_string.insert(0, char);
+                    println!("current num_string: {num_string}");
+                    // updated num_string from iterator char and immediately update dictionary
+                    for key in word_num.keys() {
+                        if !key.contains(&num_string) {
+                            num_dictionary.remove(key);
+                        }
+                    }
+
+                    if num_dictionary.len() == 1 {
+                        // this is bad and doesn't work
+                        match num_dictionary.iter().last() {
+                            Some(val) => {
+                                if val.0.eq(&num_string) {
+                                    // assing value
+                                    num2 = *val.1;
+                                    // break from loop
+                                    break;
+                                }
+                            }
+                            None => (),
+                            // if no case if match simply do nothing
+                        }
+                    }
                     if char.is_digit(10) {
                         match char.to_digit(10) {
                             Some(val) => {
@@ -107,15 +131,7 @@ fn parse_num_digits() {
                             None => (),
                         }
                     }
-                    // insert char at the beginning of the string
-                    num_string.insert(0, char);
 
-                    println!("current num_string: {num_string}");
-                    for key in word_num.keys() {
-                        if !key.contains(&num_string) {
-                            num_dictionary.remove(key);
-                        }
-                    }
                     // check if dictionary is current empty
                     if num_dictionary.is_empty() {
                         // clear out num string
@@ -124,23 +140,8 @@ fn parse_num_digits() {
                         // copy word number dictionary again
                         num_dictionary = word_num.clone();
                     }
-                    // handle the dictionary part
-                    if num_dictionary.len() == 1 {
-                        // this is bad and doesn't work
-                        for (key, val) in num_dictionary.iter() {
-                            if key.eq(&num_string) {
-                                num_string.clear();
-                                // assign the number to given value
-                                num2 = *val;
-                                // consume the last term the dictionary
-                                num_dictionary = word_num.clone();
-                                // break from current iteration
-                                break;
-                            }
-                        }
-                    }
                 }
-                println!("second number parsed from line {num2}");
+                println!("second number parsed from line: {num2}");
             }
             // sum together to two values found
             sum += (num1 * 10) + num2;
