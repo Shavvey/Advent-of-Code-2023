@@ -13,7 +13,7 @@ fn main() {
 
 fn parse_num_digits() {
     // file name that we will read from
-    let filename = "input.txt";
+    let filename = "example.txt";
     let mut num1: i32 = 0;
     let mut num2: i32 = 0;
     //println!("Reading from the file: {filename}");
