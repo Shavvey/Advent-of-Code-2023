@@ -46,6 +46,30 @@ fn parse_num_digits() {
                 // create character iterator using each char
                 for char in ln.chars() {
                     println!("current char: {char}");
+                    num_string.push(char);
+                    // print out the current 'num_string' for testing purposes
+                    println!("current num_string: {num_string}");
+                    for key in word_num.keys() {
+                        if !key.contains(&num_string) {
+                            num_dictionary.remove(key);
+                        }
+                    }
+                    if num_dictionary.len() == 1 {
+                        // this is bad and doesn't work
+                        match num_dictionary.iter().last() {
+                            Some(val) => {
+                                if val.0.eq(&num_string) {
+                                    // assing value
+                                    num1 = *val.1;
+                                    // break from loop
+                                    break;
+                                }
+                            }
+                            None => (),
+                            // if no case if match simply do nothing
+                        }
+                    }
+
                     if char.is_digit(10) {
                         match char.to_digit(10) {
                             Some(val) => {
@@ -56,27 +80,6 @@ fn parse_num_digits() {
                             None => (),
                         }
                     }
-
-                    // update num string
-                    num_string.push(char);
-                    // print out the current 'num_string' for testing purposes
-
-                    if num_dictionary.len() == 1 {
-                        // this is bad and doesn't work
-                        for (key, value) in num_dictionary.iter() {
-                            // if the num_string is matched with dictionary
-                            if key.eq(&num_string) {
-                                num_string.clear();
-                                // save the value in dict as the decoded number
-                                num1 = *value;
-                                // break out of the iteration loop
-                                num_dictionary = word_num.clone();
-                                break;
-                            }
-                            // if dictionary cannot be matched yet do nothing
-                        }
-                    }
-
                     if num_dictionary.is_empty() {
                         // clear out num string
                         num_string.clear();
@@ -84,11 +87,7 @@ fn parse_num_digits() {
                         num_string.push(char);
                         // copy word number dictionary again
                         num_dictionary = word_num.clone();
-                    }
-                    for key in word_num.keys() {
-                        if !key.contains(&num_string) {
-                            num_dictionary.remove(key);
-                        }
+                        continue;
                     }
                 }
 
