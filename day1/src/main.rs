@@ -16,7 +16,7 @@ fn parse_num_digits() {
     let filename = "input.txt";
     let mut num1: i32 = 0;
     let mut num2: i32 = 0;
-    println!("Reading from the file: {filename}");
+    //println!("Reading from the file: {filename}");
     // consume the iterator and returns (optionally) a string
     if let Ok(lines) = read_lines(filename) {
         // this hash map is very costly and not a good approach for this problem
@@ -45,7 +45,18 @@ fn parse_num_digits() {
                 let mut num_dictionary = word_num.clone();
                 // create character iterator using each char
                 for char in ln.chars() {
-                    //println!("current char: {char}");
+                    println!("current char: {char}");
+                    if char.is_digit(10) {
+                        match char.to_digit(10) {
+                            Some(val) => {
+                                num1 = val as i32;
+                                break;
+                            }
+                            // if a value cannot be matched do nothing
+                            None => (),
+                        }
+                    }
+
                     num_string.push(char);
                     // print out the current 'num_string' for testing purposes
                     println!("current num_string: {num_string}");
@@ -55,6 +66,13 @@ fn parse_num_digits() {
                             num_dictionary.remove(key);
                         }
                     }
+                    if num_dictionary.is_empty() {
+                        num_string.remove(0);
+                        // copy word number dictionary again
+                        num_dictionary = word_num.clone();
+                        continue;
+                    }
+
                     if num_dictionary.len() == 1 {
                         // this is bad and doesn't work
                         match num_dictionary.iter().last() {
@@ -70,25 +88,6 @@ fn parse_num_digits() {
                             // if no case if match simply do nothing
                         }
                     }
-
-                    if char.is_digit(10) {
-                        match char.to_digit(10) {
-                            Some(val) => {
-                                num1 = val as i32;
-                                break;
-                            }
-                            // if a value cannot be matched do nothing
-                            None => (),
-                        }
-                    }
-                    if num_dictionary.is_empty() {
-                        // clear out num string
-                        num_string.clear();
-                        // 'num_string' is just now the last character
-                        num_string.push(char);
-                        // copy word number dictionary again
-                        num_dictionary = word_num.clone();
-                    }
                 }
 
                 println!("first number parsed from line: {num1}");
@@ -97,12 +96,33 @@ fn parse_num_digits() {
                 // doing the same thing but now it is reversed
                 for char in ln.chars().rev() {
                     println!("current char: {char}");
+
+                    if char.is_digit(10) {
+                        match char.to_digit(10) {
+                            Some(val) => {
+                                num2 = val as i32;
+                                break;
+                            }
+                            // if a value cannot be matched do nothing
+                            None => (),
+                        }
+                    }
+
                     num_string.insert(0, char);
                     println!("current num_string: {num_string}");
-                    // updated num_string from iterator char and immediately update dictionary
+
                     for key in word_num.keys() {
                         if !key.contains(&num_string) {
                             num_dictionary.remove(key);
+                        }
+
+                        // check if dictionary is current empty
+                        if num_dictionary.is_empty() {
+                            // clear out num string
+                            num_string.pop();
+                            // copy word number dictionary again
+                            num_dictionary = word_num.clone();
+                            continue;
                         }
                     }
 
@@ -121,30 +141,14 @@ fn parse_num_digits() {
                             // if no case if match simply do nothing
                         }
                     }
-                    if char.is_digit(10) {
-                        match char.to_digit(10) {
-                            Some(val) => {
-                                num2 = val as i32;
-                                break;
-                            }
-                            // if a value cannot be matched do nothing
-                            None => (),
-                        }
-                    }
-
-                    // check if dictionary is current empty
-                    if num_dictionary.is_empty() {
-                        // clear out num string
-                        num_string.clear();
-                        num_string.insert(0, char);
-                        // copy word number dictionary again
-                        num_dictionary = word_num.clone();
-                    }
                 }
                 println!("second number parsed from line: {num2}");
             }
             // sum together to two values found
-            sum += (num1 * 10) + num2;
+            let decoded = num1 * 10 + num2;
+            sum += decoded;
+            //println!("decoded number: {decoded}");
+            //println!("working sum is: {sum}");
         }
         println!("total sum is: {sum}");
     }
