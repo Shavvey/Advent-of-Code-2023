@@ -1,5 +1,3 @@
-fn main() {}
-
 // enum type that represents the possible color the cubes may have
 enum Color {
     Blue,
@@ -17,4 +15,9 @@ struct Game {
     round_one: [Cubes; 3],
     round_two: [Cubes; 3],
     // how many red, blue, and green cubes are revealed
+}
+fn main() {
+    println!("Hello, World!");
+    // enum type can be declared something like this
+    let color: Color = Color::Blue;
 }
