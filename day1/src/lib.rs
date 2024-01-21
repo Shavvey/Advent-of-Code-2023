@@ -2,7 +2,7 @@
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
-
+// use the line buffer to parse each digit
 fn parse_num_digits() -> i32 {
     // file example.txt must exist in current path
     println!("reading from file");
@@ -41,6 +41,8 @@ fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
 where
     P: AsRef<Path>,
 {
-    let file = File::open(filename)?;
+    // if open is okay, create a new filehanlder called `file` to store the result
+    let file: File = File::open(filename)?;
+    // construct buffer reader from opened file
     Ok(io::BufReader::new(file).lines())
 }
