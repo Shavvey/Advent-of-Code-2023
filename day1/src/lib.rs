@@ -1,6 +1,9 @@
 #![allow(dead_code)]
+// file system libraries
 use std::fs::File;
+// io and buffer reader libraries
 use std::io::{self, BufRead};
+// file path libraries
 use std::path::Path;
 // use the line buffer to parse each digit
 fn parse_num_digits() -> i32 {
