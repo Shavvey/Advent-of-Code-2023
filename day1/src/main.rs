@@ -8,6 +8,7 @@ use std::{
 };
 
 fn main() {
+    // parse each string in textfile to produce the two digit of each line
     parse_num_digits();
 }
 
