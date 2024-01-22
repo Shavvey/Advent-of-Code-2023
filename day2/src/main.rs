@@ -36,4 +36,7 @@ where
 fn main() {
     println!("Hello, World!");
     // enum type can be declared something like this
+    let filename = "parse.txt";
+    // get the lines of the textfile we need
+    if let Ok(lines) = read_lines(filename) {}
 }
