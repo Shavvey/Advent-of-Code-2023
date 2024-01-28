@@ -11,7 +11,7 @@ fn main() {
     // parse each string in textfile to produce the two digit of each line
     parse_num_digits();
 }
-
+// parse the digits inside the textfile
 fn parse_num_digits() {
     // file name that we will read from
     let filename = "example.txt";
@@ -153,6 +153,7 @@ fn parse_num_digits() {
             //println!("decoded number: {decoded}");
             //println!("working sum is: {sum}");
         }
+        // total sum using the parsed number
         println!("total sum is: {sum}");
     }
 }
@@ -161,8 +162,11 @@ fn parse_num_digits() {
 // a string or something
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
 where
+    // P is a generic that represents a reference to a file path
     P: AsRef<Path>,
 {
+    // open the file
     let file = File::open(filename)?;
+    // if file open succesfully, open a buffer reader of the textfile
     Ok(io::BufReader::new(file).lines())
 }
