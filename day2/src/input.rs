@@ -13,5 +13,6 @@ struct Round {
 
 struct Game {
     id: u32,
+    // game is just a series of rounds, stored in this vector
     rounds: Vec<rounds>,
 }
