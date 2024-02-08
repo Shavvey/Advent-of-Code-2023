@@ -13,11 +13,13 @@ struct Round {
     blue_count: u32,
 }
 
+// derive Debug and PartialEq
 #[derive(Debug, PartialEq)]
 struct Game {
     id: u32,
     // game is just a series of rounds, stored in this vector
     rounds: Vec<Round>,
+    // rounds is justs a vector that stores each individual round
 }
 
 // implement methods for Round
